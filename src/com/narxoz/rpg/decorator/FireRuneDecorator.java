@@ -7,19 +7,17 @@ public class FireRuneDecorator extends ActionDecorator {
 
     @Override
     public String getActionName() {
-        // TODO: Decide how this decorator changes the visible action name.
-        return super.getActionName();
+        return super.getActionName() + " [FireRune]";
     }
 
     @Override
     public int getDamage() {
-        // TODO: Add fire-related behavior on top of wrapped damage.
-        return super.getDamage();
+        return super.getDamage() + 5;
     }
 
     @Override
     public String getEffectSummary() {
-        // TODO: Append or compose the fire effect description.
-        return super.getEffectSummary();
+        String base = super.getEffectSummary();
+        return base + (base.isEmpty() ? "" : ";") + "fire:burn=3:dur=2";
     }
 }
