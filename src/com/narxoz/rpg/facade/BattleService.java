@@ -15,23 +15,38 @@ public class BattleService {
     }
 
     public AdventureResult battle(HeroProfile hero, BossEnemy boss, AttackAction action) {
-        // TODO: Implement the battle flow.
-        // Questions to answer:
-        // - Who attacks first?
-        // - How many rounds are allowed?
-        // - How is damage resolved?
-        // - How will randomness affect the result, if at all?
         AdventureResult result = new AdventureResult();
-        result.setWinner("TODO");
-        result.setRounds(0);
-        result.setReward("TODO");
-        result.addLine("TODO: implement battle logic");
+        int heroHp = hero.getHealth();
+        int bossHp = boss.getHealth();
+        int round = 0;
 
-        // Keep the field in use so students can decide whether to rely on it.
-        if (random.nextInt(1) == 0) {
-            // TODO: Replace placeholder branch with real deterministic or random logic.
+        result.addLine("Battle Start!");
+
+        while (heroHp > 0 && bossHp > 0 && round < 100) {
+            round++;
+
+            int heroDamage = action.getDamage();
+            bossHp -= heroDamage;
+            if (bossHp < 0) bossHp = 0;
+            result.addLine(String.format("Round %d: %s hits %s for %d (Boss HP -> %d)",
+                    round, hero.getName(), boss.getName(), heroDamage, bossHp));
+
+            if (bossHp <= 0) break;
+
+            int bossDamage = boss.getAttackPower();
+            heroHp -= bossDamage;
+            if (heroHp < 0) heroHp = 0;
+            result.addLine(String.format("Round %d: %s hits %s for %d (Hero HP -> %d)",
+                    round, boss.getName(), hero.getName(), bossDamage, heroHp));
         }
 
+        String winner;
+        if (heroHp > 0 && bossHp <= 0) winner = hero.getName();
+        else if (bossHp > 0 && heroHp <= 0) winner = boss.getName();
+        else winner = "Draw";
+
+        result.setWinner(winner);
+        result.setRounds(round);
         return result;
     }
 }
